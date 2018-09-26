@@ -16,7 +16,7 @@ class Mailer {
 	{
 		
 			$config = array(
-					"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/email",
+					"tpl_dir"       => $_SERVER["DOCUMENT_ROOT"]."/views/email/",
 					"cache_dir"     => $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 					"debug"         => false
 				   );
@@ -32,7 +32,7 @@ class Mailer {
 
 
 		//Create a new PHPMailer instance
-		$this->mail = new PHPMailer\PHPMailer\PHPMailer();
+		$this->mail = new \PHPMailer();
 
 		//Tell PHPMailer to use SMTP
 		$this->mail->isSMTP();
