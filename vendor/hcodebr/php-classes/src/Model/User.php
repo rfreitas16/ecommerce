@@ -184,10 +184,13 @@ class User extends Model{
 		throw new \Exception("Não foi possivel recuperar a senha");
 		}
 		else{
+			
 			$dataRecovery = $results2[0];
 			$iv = random_bytes(openssl_cipher_iv_length('aes-256-cbc'));
 			$code = openssl_encrypt($dataRecovery['idrecovery'], 'aes-256-cbc', User::SECRET, 0, $iv);
              $result = base64_encode($iv.$code);
+
+             
 			if ($inadmin === true) {
                  $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$result";
              } else {
