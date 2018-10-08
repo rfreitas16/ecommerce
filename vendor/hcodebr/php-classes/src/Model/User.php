@@ -156,8 +156,6 @@ class User extends Model{
 
 		$sql->query("CALL sp_users_delete(:iduser)", array(":iduser"=>$this->getiduser()));
 	}
-	////ATÉ AQUI OK/////
-
 	public static function getForgot($email, $inadmin = true){
 
 		$sql = new Sql();
@@ -266,24 +264,49 @@ class User extends Model{
  		$msg = (isset($_SESSION[User::ERROR]) && $_SESSION[User::ERROR]) ? $_SESSION[User::ERROR] : '';
  		User::clearError();
  		return $msg;
- 		}
+ 	}
+
  	public static function clearError()
  	{
 
  		$_SESSION[User::ERROR] = NULL;
 
  	}
+
  	public static function setErrorRegister($msg){
 
 
  			$_SESSION[User::ERROR_REGISTER] = $msg;
 
  	}
+ 	public static function getErrorRegister(){
+
+ 		$msg = (isset($_SESSION[User::ERROR_REGISTER])  && $_SESSION[User::ERROR_REGISTER]) ? $_SESSION[User::ERROR_REGISTER] : '';
+
+ 		User::clearErrorRegister();
+ 		return $msg;
+ 	}
+ 	public static function clearErrorRegister(){
+
+ 		$_SESSION[User::ERROR_REGISTER] = NULL;
+ 	}
+ 	//CRIPTOGRAFAR SENHA//
+
  	public static function getPasswordHash($password){
 
  		return password_hash($password, PASSWORD_DEFAULT, [
  			'cost'=>12]);
  	}
+
+ 	public static function checkLoginExist($login){
+
+ 		$sql = new Sql();
+
+ 		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin", [':deslogin'=>$login]);
+ 		return (count($results) > 0);
+ 	}
+
+
 
 
 }
