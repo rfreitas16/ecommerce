@@ -12,6 +12,7 @@ class User extends Model{
 	const SECRET = "HcodePhp7_Secret";
 	const ERROR = "UserError";
 	const ERROR_REGISTER = "UserErrorRegister";
+	const SUCCESS = "UserSuccess";
 
 	public static function getFromSession(){
 
@@ -190,7 +191,7 @@ class User extends Model{
 			$code = openssl_encrypt($dataRecovery['idrecovery'], 'aes-256-cbc', User::SECRET, 0, $iv);
              $result = base64_encode($iv.$code);
 
-             
+
 			if ($inadmin === true) {
                  $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$result";
              } else {
@@ -300,7 +301,7 @@ class User extends Model{
  		return password_hash($password, PASSWORD_DEFAULT, [
  			'cost'=>12]);
  	}
-
+ 	//VERIFICAR SE O LOGIN JA NAO EXISTE//
  	public static function checkLoginExist($login){
 
  		$sql = new Sql();
@@ -308,6 +309,26 @@ class User extends Model{
  		$results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :deslogin", [':deslogin'=>$login]);
  		return (count($results) > 0);
  	}
+
+ 	public static function setSuccess($msg)
+ 	{
+
+ 		$_SESSION[User::SUCCESS] = $msg;
+ 	}
+ 	public static function getSuccess(){
+
+ 		$msg = (isset($_SESSION[User::SUCCESS]) && $_SESSION[User::SUCCESS]) ? $_SESSION[User::SUCCESS] : '';
+ 		User::clearError();
+ 		return $msg;
+ 	}
+
+ 	public static function clearSuccess()
+ 	{
+
+ 		$_SESSION[User::SUCCESS] = NULL;
+
+ 	}
+
 
 
 
