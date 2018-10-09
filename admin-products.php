@@ -45,8 +45,9 @@ $app->post("/admin/products/:idproduct", function($idproduct){
 	$product->get((int)$idproduct);
 	$product->setData($_POST);
 	$product->save();
+	if($_FILES["file"]["name"] !== "")
 	$product->setPhoto($_FILES["file"]);
-	header('Location: /admin/products');
+	header("Location: /admin/products");
 	exit;
 	
 });
